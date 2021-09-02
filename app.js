@@ -2,17 +2,34 @@ const searchBook = () => {
     const searchField = document.getElementById("search-field");
     const searchValue = searchField.value;
     searchField.value = '';
-    // console.log(searchValue)
-    const url = `https://openlibrary.org/search.json?q=${searchValue}`
-    // console.log(url)
-    fetch(url)
-        .then(Response => Response.json())
-        .then(data => dispalySearchResult(data.docs))
-}
-// searchBook()
 
+
+    // error handel purpose use if else and alert
+    if (searchValue === '') {
+        alert("please write some text")
+    }
+    else {
+
+        const url = `https://openlibrary.org/search.json?q=${searchValue}`
+        // console.log(url)
+        fetch(url)
+            .then(Response => Response.json())
+
+            // for count search result 
+            .then(data => {
+                const totalFound = document.getElementById("total-found").innerText = data.numFound;
+                dispalySearchResult(data.docs)
+            })
+
+    }
+}
+
+
+
+// for showing search result in display
 const dispalySearchResult = (docs) => {
     const searchResult = document.getElementById("search-result");
+    searchResult.innerHTML = '';
     docs.forEach(doc => {
         console.log(doc)
         const div = document.createElement('div');
